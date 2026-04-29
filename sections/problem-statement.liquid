@@ -1,0 +1,113 @@
+<section class="problem-section" id="problem">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ section.settings.title | default: 'Le Problème avec les Litières Traditionnelles' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p>{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="problem-cards">
+      {%- for block in section.blocks -%}
+        <div class="problem-card animate-on-scroll" {{ block.shopify_attributes }}>
+          <span class="problem-icon" aria-hidden="true">{{ block.settings.icon }}</span>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.description }}</p>
+        </div>
+      {%- else -%}
+        <!-- Default cards -->
+        <div class="problem-card animate-on-scroll">
+          <span class="problem-icon" aria-hidden="true">😤</span>
+          <h3>Odeurs Constantes</h3>
+          <p>Les odeurs envahissent votre maison. C'est embarrassant et insalubre pour vous et vos invités.</p>
+        </div>
+        <div class="problem-card animate-on-scroll animate-in-delay-1">
+          <span class="problem-icon" aria-hidden="true">⏰</span>
+          <h3>Travail Quotidien</h3>
+          <p>Nettoyer la litière est dégoûtant et chronophage. Zéro confort, zéro liberté dans votre quotidien.</p>
+        </div>
+        <div class="problem-card animate-on-scroll animate-in-delay-2">
+          <span class="problem-icon" aria-hidden="true">🐱</span>
+          <h3>Santé du Chat Inconnue</h3>
+          <p>Vous ne savez pas si votre chat va bien. Aucune visibilité sur ses habitudes et sa santé au quotidien.</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Problème",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Le Problème avec les Litières Traditionnelles"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre (optionnel)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "problem_card",
+      "name": "Carte problème",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji ou icône",
+          "default": "😤"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Problème"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Description du problème..."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Problème",
+      "blocks": [
+        {
+          "type": "problem_card",
+          "settings": {
+            "icon": "😤",
+            "title": "Odeurs Constantes",
+            "description": "Les odeurs envahissent votre maison. C'est embarrassant et insalubre."
+          }
+        },
+        {
+          "type": "problem_card",
+          "settings": {
+            "icon": "⏰",
+            "title": "Travail Quotidien",
+            "description": "Nettoyer la litière est dégoûtant et chronophage. Zéro confort."
+          }
+        },
+        {
+          "type": "problem_card",
+          "settings": {
+            "icon": "🐱",
+            "title": "Santé du Chat Inconnue",
+            "description": "Vous ne savez pas si votre chat va bien. Aucune visibilité."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

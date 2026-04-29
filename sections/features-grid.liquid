@@ -1,0 +1,138 @@
+<section class="features-section" id="features">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ section.settings.title | default: 'Technologie Intelligente' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p style="color:rgba(245,241,237,0.7)">{{ section.settings.subtitle }}</p>
+      {%- else -%}
+        <p style="color:rgba(245,241,237,0.7)">Chaque détail a été pensé pour vous et votre chat.</p>
+      {%- endif -%}
+    </div>
+
+    <div class="features-grid">
+      {%- for block in section.blocks -%}
+        <div class="feature-card animate-on-scroll" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            <img
+              class="feature-card-img"
+              src="{{ block.settings.image | image_url: width: 600 }}"
+              alt="{{ block.settings.image.alt | default: block.settings.title }}"
+              loading="lazy"
+              width="600"
+              height="400"
+            >
+          {%- elsif block.settings.image_filename != blank -%}
+            <img
+              class="feature-card-img"
+              src="{{ block.settings.image_filename | asset_url }}"
+              alt="{{ block.settings.title }}"
+              loading="lazy"
+              width="600"
+              height="400"
+            >
+          {%- endif -%}
+          <div class="feature-card-body">
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.description }}</p>
+          </div>
+        </div>
+      {%- else -%}
+        <!-- Default features using asset images -->
+        <div class="feature-card animate-on-scroll">
+          <img class="feature-card-img" src="{{ 'mechanism.jpg' | asset_url }}" alt="Opération physique intelligente" loading="lazy">
+          <div class="feature-card-body">
+            <h3>Opération Physique Intelligente</h3>
+            <p>Nettoyage automatique sans produits chimiques. 100% sûr pour vos chats, même les plus sensibles.</p>
+          </div>
+        </div>
+        <div class="feature-card animate-on-scroll animate-in-delay-1">
+          <img class="feature-card-img" src="{{ 'app-feature.jpg' | asset_url }}" alt="App connectée" loading="lazy">
+          <div class="feature-card-body">
+            <h3>App Connectée</h3>
+            <p>Suivi santé en temps réel, historique de nettoyage, alertes et notifications. Toujours informé.</p>
+          </div>
+        </div>
+        <div class="feature-card animate-on-scroll animate-in-delay-2">
+          <img class="feature-card-img" src="{{ 'multi-cat.jpg' | asset_url }}" alt="Parfait pour 3-4 chats" loading="lazy">
+          <div class="feature-card-body">
+            <h3>Parfait pour 3-4 Chats</h3>
+            <p>Capacité 65L. Un seul robot remplace 3 litières traditionnelles. Idéal pour les foyers multi-chats.</p>
+          </div>
+        </div>
+        <div class="feature-card animate-on-scroll">
+          <img class="feature-card-img" src="{{ 'noise-feature.jpg' | asset_url }}" alt="Silencieux" loading="lazy">
+          <div class="feature-card-body">
+            <h3>Silencieuse (&lt; 35dB)</h3>
+            <p>Moins bruit qu'une conversation normale. Ne dérange pas vos chats ni votre famille la nuit.</p>
+          </div>
+        </div>
+        <div class="feature-card animate-on-scroll animate-in-delay-1">
+          <img class="feature-card-img" src="{{ 'app-interface.jpg' | asset_url }}" alt="Design compact" loading="lazy">
+          <div class="feature-card-body">
+            <h3>Design Compact Premium</h3>
+            <p>480×520×505mm. Élégant et discret. S'intègre parfaitement dans n'importe quelle pièce.</p>
+          </div>
+        </div>
+        <div class="feature-card animate-on-scroll animate-in-delay-2">
+          <img class="feature-card-img" src="{{ 'space-optimization.jpg' | asset_url }}" alt="Capacité 65L" loading="lazy">
+          <div class="feature-card-body">
+            <h3>Capacité 65L</h3>
+            <p>15 jours pour 1 chat, 5 jours pour 3-4 chats. Moins de maintenance, plus de liberté.</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Grille de fonctionnalités",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Technologie Intelligente"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "Chaque détail a été pensé pour vous et votre chat."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Fonctionnalité",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_filename",
+          "label": "Nom du fichier image (assets/)",
+          "info": "Ex: mechanism.jpg"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Fonctionnalité"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Description de la fonctionnalité..."
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Grille de fonctionnalités" }]
+}
+{% endschema %}

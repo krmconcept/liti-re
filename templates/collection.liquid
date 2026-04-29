@@ -1,0 +1,35 @@
+<div class="collection-page">
+  <div class="container">
+    <div class="collection-header">
+      <h1>{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}
+        <p>{{ collection.description }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products_count > 0 -%}
+      <div class="collection-grid" role="list">
+        {%- for product in collection.products -%}
+          <div role="listitem">
+            {% render 'product-card', product: product %}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav aria-label="Pagination" style="display:flex;justify-content:center;gap:0.5rem;margin-top:var(--space-xl)">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn btn-secondary">← Précédent</a>
+          {%- endif -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn btn-secondary">Suivant →</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <p style="text-align:center;color:var(--text-muted);padding-block:var(--space-xl)">
+        Aucun produit disponible dans cette collection.
+      </p>
+    {%- endif -%}
+  </div>
+</div>

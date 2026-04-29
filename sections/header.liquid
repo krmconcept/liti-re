@@ -1,0 +1,75 @@
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <!-- Logo -->
+    <a href="/" class="header-logo" aria-label="{{ shop.name }}">
+      {%- if settings.logo != blank -%}
+        <img
+          src="{{ settings.logo | image_url: width: 200 }}"
+          alt="{{ shop.name }}"
+          width="{{ settings.logo_width }}"
+          loading="eager"
+        >
+      {%- else -%}
+        PETCARE<span> SMART</span>
+      {%- endif -%}
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="header-nav" aria-label="Navigation principale">
+      <a href="/">Accueil</a>
+      <a href="/collections/all">Produit</a>
+      <a href="/pages/faq">FAQ</a>
+      <a href="/pages/contact">Contact</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <a href="/cart" class="header-cart" aria-label="Panier ({{ cart.item_count }} article{{ cart.item_count | pluralize: '', 's' }})">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-count" {% if cart.item_count == 0 %}style="display:none"{% endif %}>
+          {{ cart.item_count }}
+        </span>
+      </a>
+
+      <a href="/collections/all" class="btn btn-primary header-cta" style="height:40px;padding:0 1.25rem;font-size:0.875rem;">
+        Commander
+      </a>
+
+      <!-- Mobile menu toggle -->
+      <button class="menu-toggle" id="menu-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation Overlay -->
+<nav class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Navigation mobile">
+  <a href="/">Accueil</a>
+  <a href="/collections/all">Produit</a>
+  <a href="/pages/faq">FAQ</a>
+  <a href="/pages/contact">Contact</a>
+  <a href="/cart" class="btn btn-primary" style="margin-top:1rem;">
+    Panier ({{ cart.item_count }})
+  </a>
+</nav>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Afficher le bouton Commander",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,77 @@
+<section class="social-proof-section" id="social-proof" aria-label="Avis clients">
+  <div class="container">
+    <p class="social-proof-rating" aria-label="{{ section.settings.rating | default: '4.7' }} sur 5">
+      {{ section.settings.rating | default: '4.7' }}/5
+    </p>
+    <p class="social-proof-stars" aria-hidden="true">★★★★★</p>
+    <p class="social-proof-subtitle">
+      {{ section.settings.subtitle | default: 'De 1 136 avis vérifiés — Approuvé par des milliers de propriétaires de chats' }}
+    </p>
+
+    <div class="trust-badges" role="list">
+      {%- for block in section.blocks -%}
+        <div class="trust-badge" role="listitem" {{ block.shopify_attributes }}>
+          <span class="check" aria-hidden="true">✓</span>
+          {{ block.settings.text }}
+        </div>
+      {%- else -%}
+        <div class="trust-badge" role="listitem">
+          <span class="check" aria-hidden="true">✓</span>
+          30 Jours Satisfait ou Remboursé
+        </div>
+        <div class="trust-badge" role="listitem">
+          <span class="check" aria-hidden="true">✓</span>
+          1 An de Garantie
+        </div>
+        <div class="trust-badge" role="listitem">
+          <span class="check" aria-hidden="true">✓</span>
+          Support Client 24/7
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Preuve sociale",
+  "settings": [
+    {
+      "type": "text",
+      "id": "rating",
+      "label": "Note (ex: 4.7)",
+      "default": "4.7"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre",
+      "default": "De 1 136 avis vérifiés — Approuvé par des milliers de propriétaires de chats"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge de confiance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte du badge",
+          "default": "30 Jours Satisfait ou Remboursé"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Preuve sociale",
+      "blocks": [
+        { "type": "badge", "settings": { "text": "30 Jours Satisfait ou Remboursé" } },
+        { "type": "badge", "settings": { "text": "1 An de Garantie" } },
+        { "type": "badge", "settings": { "text": "Support Client 24/7" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

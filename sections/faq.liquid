@@ -1,0 +1,95 @@
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ section.settings.title | default: 'Questions Fréquentes' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p>{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="faq-list" role="list">
+      {%- for block in section.blocks -%}
+        <div class="faq-item" role="listitem" {{ block.shopify_attributes }}>
+          <button
+            class="faq-header"
+            aria-expanded="false"
+            aria-controls="faq-body-{{ forloop.index }}"
+          >
+            <h3>{{ block.settings.question }}</h3>
+            <span class="faq-chevron" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-body" id="faq-body-{{ forloop.index }}" role="region">
+            <div class="faq-body-inner">
+              <p>{{ block.settings.answer }}</p>
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        {%- assign default_faqs = "Et si mon chat refuse d'utiliser?,C'est vraiment plus simple qu'une litière normale?,Ça prend combien de place?,Ça fonctionne pour plusieurs chats?,Et le support et la garantie?,Vraiment 70% moins d'odeurs?" | split: ',' -%}
+        {%- assign default_answers = "30 jours garantis sans risque. Si votre chat ne l'utilise pas (rare — 97% l'adoptent immédiatement), nous vous remboursons intégralement. Zéro risque, zéro question.,Oui, radicalement. Zéro scooping quotidien. Vous videz le bac 1-2 fois par mois seulement, contre chaque jour avec une litière classique. L'app gère le reste automatiquement.,480×520×505mm. Compact mais robuste. S'intègre parfaitement dans n'importe quel coin de maison, salon, salle de bain ou buanderie.,Parfait pour 3-4 chats. Capacité 65L. Un seul robot PETCARE SMART remplace 3 litières traditionnelles et nettoie après chaque utilisation.,1 an de garantie complète. Support client 24/7 par email et chat. Pièces de rechange disponibles (10-30€). Nous sommes là pour vous.,Oui. Le nettoyage automatique après chaque utilisation + le système de purification ionique éliminent les odeurs à la source. Testé et vérifié par nos clients." | split: ',' -%}
+
+        {%- for q in default_faqs -%}
+          <div class="faq-item" role="listitem">
+            <button class="faq-header" aria-expanded="false" aria-controls="faq-default-{{ forloop.index }}">
+              <h3>{{ q }}</h3>
+              <span class="faq-chevron" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-body" id="faq-default-{{ forloop.index }}" role="region">
+              <div class="faq-body-inner">
+                <p>{{ default_answers[forloop.index0] }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Questions Fréquentes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre (optionnel)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question / Réponse",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Votre question ici ?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Réponse",
+          "default": "Votre réponse détaillée ici..."
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "FAQ" }]
+}
+{% endschema %}

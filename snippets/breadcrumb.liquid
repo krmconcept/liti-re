@@ -1,0 +1,49 @@
+{%- comment -%}
+  Breadcrumb navigation snippet.
+  Usage: {% render 'breadcrumb' %}
+{%- endcomment -%}
+
+<nav aria-label="Fil d'Ariane" style="margin-bottom:var(--space-lg)">
+  <ol style="display:flex;align-items:center;gap:0.5rem;list-style:none;flex-wrap:wrap;font-size:0.8125rem;color:var(--text-muted)">
+    <li>
+      <a href="/" style="color:var(--text-muted);transition:color 0.2s">Accueil</a>
+    </li>
+    <li aria-hidden="true" style="color:var(--text-muted)">›</li>
+
+    {%- if template.name == 'product' -%}
+      {%- if collection -%}
+        <li>
+          <a href="{{ collection.url }}" style="color:var(--text-muted);transition:color 0.2s">{{ collection.title }}</a>
+        </li>
+        <li aria-hidden="true" style="color:var(--text-muted)">›</li>
+      {%- endif -%}
+      <li>
+        <span aria-current="page" style="color:var(--brown);font-weight:600">{{ product.title }}</span>
+      </li>
+
+    {%- elsif template.name == 'collection' -%}
+      <li>
+        <span aria-current="page" style="color:var(--brown);font-weight:600">{{ collection.title }}</span>
+      </li>
+
+    {%- elsif template.name == 'page' -%}
+      <li>
+        <span aria-current="page" style="color:var(--brown);font-weight:600">{{ page.title }}</span>
+      </li>
+
+    {%- elsif template.name == 'blog' -%}
+      <li>
+        <span aria-current="page" style="color:var(--brown);font-weight:600">{{ blog.title }}</span>
+      </li>
+
+    {%- elsif template.name == 'article' -%}
+      <li>
+        <a href="{{ blog.url }}" style="color:var(--text-muted)">{{ blog.title }}</a>
+      </li>
+      <li aria-hidden="true" style="color:var(--text-muted)">›</li>
+      <li>
+        <span aria-current="page" style="color:var(--brown);font-weight:600">{{ article.title }}</span>
+      </li>
+    {%- endif -%}
+  </ol>
+</nav>

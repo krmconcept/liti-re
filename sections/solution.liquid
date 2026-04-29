@@ -1,0 +1,74 @@
+<section class="solution-section" id="solution">
+  <div class="container">
+    <div class="solution-inner">
+      <div class="solution-text animate-on-scroll">
+        <h2>{{ section.settings.heading | default: 'Il Existe une Meilleure Solution' }}</h2>
+        <p>{{ section.settings.text | default: 'PETCARE SMART résout tous ces problèmes en une seule fois. Fini la corvée quotidienne, les odeurs et l\'inquiétude pour la santé de votre chat. La technologie s\'occupe de tout.' }}</p>
+        <a href="{{ section.settings.link | default: '#benefits' }}" class="solution-arrow">
+          {{ section.settings.link_text | default: 'Découvrez Comment' }}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="solution-image animate-on-scroll animate-in-delay-1">
+        {%- if section.settings.image != blank -%}
+          <img
+            src="{{ section.settings.image | image_url: width: 800 }}"
+            alt="{{ section.settings.image.alt | default: 'PETCARE SMART litière robot' }}"
+            loading="lazy"
+            width="800"
+            height="600"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'product-hero.jpg' | asset_url }}"
+            alt="PETCARE SMART — Litière Robot Intelligente"
+            loading="lazy"
+            width="800"
+            height="600"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Solution",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Il Existe une Meilleure Solution"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texte descriptif",
+      "default": "PETCARE SMART résout tous ces problèmes en une seule fois. Fini la corvée quotidienne, les odeurs et l'inquiétude pour la santé de votre chat."
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Lien de la flèche"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Texte du lien",
+      "default": "Découvrez Comment"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image du produit"
+    }
+  ],
+  "presets": [{ "name": "Solution" }]
+}
+{% endschema %}

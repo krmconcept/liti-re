@@ -1,0 +1,85 @@
+<section class="benefits-section" id="benefits">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ section.settings.title | default: '3 Raisons d\'Aimer PETCARE SMART' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p>{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="benefit-cards">
+      {%- for block in section.blocks -%}
+        <div class="benefit-card animate-on-scroll" {{ block.shopify_attributes }}>
+          <div class="benefit-check" aria-hidden="true">✓</div>
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.description }}</p>
+        </div>
+      {%- else -%}
+        <div class="benefit-card animate-on-scroll">
+          <div class="benefit-check" aria-hidden="true">✓</div>
+          <h3>Liberté Sans Effort</h3>
+          <p>Fini le nettoyage quotidien. Le robot nettoie automatiquement après chaque utilisation, 24h/24, 7j/7. Votre temps vous appartient enfin.</p>
+        </div>
+        <div class="benefit-card animate-on-scroll animate-in-delay-1">
+          <div class="benefit-check" aria-hidden="true">✓</div>
+          <h3>Santé en Temps Réel</h3>
+          <p>L'app intelligente surveille les habitudes de votre chat. Détectez les problèmes de santé tôt, agissez avant qu'ils ne s'aggravent.</p>
+        </div>
+        <div class="benefit-card animate-on-scroll animate-in-delay-2">
+          <div class="benefit-check" aria-hidden="true">✓</div>
+          <h3>Maison Toujours Propre</h3>
+          <p>Réduction des odeurs de 70%. Votre intérieur reste frais et agréable, sans compromis. Recevez des invités sans aucune gêne.</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bénéfices",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "3 Raisons d'Aimer PETCARE SMART"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sous-titre (optionnel)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Bénéfice",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Avantage clé"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Description du bénéfice..."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bénéfices",
+      "blocks": [
+        { "type": "benefit", "settings": { "title": "Liberté Sans Effort", "description": "Fini le nettoyage quotidien. Le robot nettoie automatiquement, 24/7." } },
+        { "type": "benefit", "settings": { "title": "Santé en Temps Réel", "description": "App intelligente = suivi santé de votre chat. Détectez les problèmes tôt." } },
+        { "type": "benefit", "settings": { "title": "Maison Toujours Propre", "description": "70% moins d'odeurs. Votre intérieur reste frais, beau, sans mesure." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

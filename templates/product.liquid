@@ -1,0 +1,218 @@
+<div class="product-page">
+  <div class="container">
+    {% render 'breadcrumb' %}
+
+    <div class="product-layout">
+      <!-- ===== LEFT: Gallery ===== -->
+      <div class="product-gallery">
+        <div class="gallery-main">
+          {%- assign featured = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+          <img
+            id="gallery-main-img"
+            src="{{ featured | image_url: width: 900 }}"
+            alt="{{ featured.alt | default: product.title | escape }}"
+            width="900"
+            height="900"
+            loading="eager"
+          >
+        </div>
+
+        {%- if product.images.size > 1 -%}
+          <div class="gallery-thumbs" role="list">
+            {%- for image in product.images limit: 4 -%}
+              <button
+                class="gallery-thumb {% if forloop.first %}active{% endif %}"
+                aria-label="Voir image {{ forloop.index }}"
+                role="listitem"
+              >
+                <img
+                  src="{{ image | image_url: width: 200 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  width="200"
+                  height="200"
+                  loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- ===== RIGHT: Product Info ===== -->
+      <div class="product-info">
+        <h1>{{ product.title }}</h1>
+
+        <!-- Rating -->
+        <div class="product-rating">
+          <span class="stars" aria-label="4.7 étoiles sur 5">★★★★★</span>
+          <span class="rating-count">4.7/5 · 1 136 avis vérifiés</span>
+        </div>
+
+        <!-- Price block -->
+        <div class="product-price-block">
+          <p class="product-price">
+            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+              <s style="font-size:1.25rem;opacity:0.5;font-weight:400;">{{ product.selected_or_first_available_variant.compare_at_price | money }}</s>
+              &nbsp;{{ product.selected_or_first_available_variant.price | money }}
+            {%- else -%}
+              {{ product.selected_or_first_available_variant.price | money }}
+            {%- endif -%}
+          </p>
+          <p class="product-shipping">🚚 Livraison gratuite dès 50€</p>
+          <p class="product-klarna">💳 Klarna : 58€/mois sans intérêt</p>
+        </div>
+
+        <!-- Stock status -->
+        <p class="product-stock">
+          <span class="stock-dot"></span>
+          EN STOCK — Expédition sous 24h
+        </p>
+
+        {%- form 'product', product, id: 'product-form' -%}
+          {%- unless product.has_only_default_variant -%}
+            <variant-picker>
+              {%- for option in product.options_with_values -%}
+                <div style="margin-bottom:var(--space-md)">
+                  <p style="font-weight:600;margin-bottom:0.5rem">{{ option.name }}</p>
+                  <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                    {%- for value in option.values -%}
+                      <label style="cursor:pointer">
+                        <input
+                          type="radio"
+                          name="{{ option.name }}"
+                          value="{{ value }}"
+                          {% if option.selected_value == value %}checked{% endif %}
+                          style="position:absolute;opacity:0;width:0;height:0"
+                        >
+                        <span style="display:inline-block;padding:0.5rem 1rem;border:2px solid var(--brown);border-radius:var(--radius-sm);font-size:0.875rem;font-weight:600;transition:all 0.2s">
+                          {{ value }}
+                        </span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              {%- endfor -%}
+            </variant-picker>
+          {%- endunless -%}
+
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+          <!-- Quantity -->
+          <div class="quantity-block">
+            <span class="quantity-label">Quantité</span>
+            <div class="quantity-selector">
+              <button type="button" class="qty-btn qty-minus" aria-label="Diminuer la quantité">−</button>
+              <input
+                type="number"
+                class="qty-input"
+                name="quantity"
+                value="1"
+                min="1"
+                max="99"
+                aria-label="Quantité"
+              >
+              <button type="button" class="qty-btn qty-plus" aria-label="Augmenter la quantité">+</button>
+            </div>
+          </div>
+
+          <!-- CTA buttons -->
+          <div class="product-form-actions">
+            <button
+              type="submit"
+              name="add"
+              class="btn btn-primary btn-full btn-lg"
+              data-add-to-cart
+              data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+              {%- unless product.selected_or_first_available_variant.available -%}disabled{%- endunless -%}
+            >
+              {%- if product.selected_or_first_available_variant.available -%}
+                Ajouter au Panier
+              {%- else -%}
+                Épuisé
+              {%- endif -%}
+            </button>
+
+            <a href="/cart" class="btn btn-secondary btn-full btn-lg">
+              Acheter Maintenant
+            </a>
+          </div>
+        {%- endform -%}
+
+        <!-- Checklist -->
+        <ul class="product-checklist" aria-label="Points clés du produit">
+          <li class="check-item">Nettoyage automatique après chaque utilisation</li>
+          <li class="check-item">App santé connectée (iOS & Android)</li>
+          <li class="check-item">Capacité 65L — parfait pour 3-4 chats</li>
+          <li class="check-item">Ultra silencieux (&lt; 35dB)</li>
+          <li class="check-item">Design compact 480×520×505mm</li>
+          <li class="check-item">30 jours satisfait ou remboursé</li>
+        </ul>
+
+        <!-- Specifications -->
+        <div class="product-specs">
+          <h3>Caractéristiques Techniques</h3>
+          <table class="specs-table">
+            <tbody>
+              <tr><td>Dimensions</td><td>480 × 520 × 505 mm</td></tr>
+              <tr><td>Capacité</td><td>65 L</td></tr>
+              <tr><td>Poids</td><td>~12 kg</td></tr>
+              <tr><td>Puissance</td><td>18W max</td></tr>
+              <tr><td>Connectivité</td><td>WiFi 2.4GHz</td></tr>
+              <tr><td>Application</td><td>iOS & Android</td></tr>
+              <tr><td>Niveau sonore</td><td>&lt; 35 dB</td></tr>
+              <tr><td>Garantie</td><td>1 an</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Shipping & returns -->
+        <div class="shipping-info">
+          <p>📦 <strong>Livraison :</strong> 6-9 jours ouvrables. Gratuite dès 50€.</p>
+          <p>🔄 <strong>Retours :</strong> 30 jours satisfait ou intégralement remboursé.</p>
+          <p>📧 <strong>Support :</strong> contact@petcaresmart.be — Réponse sous 24h.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product description -->
+    {%- if product.description != blank -%}
+      <div style="padding-block:var(--space-xl);max-width:800px;margin-inline:auto">
+        <h2 style="color:var(--brown);margin-bottom:var(--space-lg)">Description</h2>
+        <div style="font-size:1.0625rem;line-height:1.8;color:var(--charcoal)">
+          {{ product.description }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <!-- Reviews section -->
+    <div class="product-reviews">
+      <h2>Avis Clients</h2>
+      <div class="testimonials-grid">
+        <article class="testimonial-card">
+          <p class="testimonial-stars">★★★★★</p>
+          <blockquote class="testimonial-text">"Mes chats adorent ! Plus aucune odeur. Installation simple. Je recommande à 100%."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">M</div>
+            <div class="author-info"><p class="name">Marie L.</p><p class="location">Paris, France</p></div>
+          </div>
+        </article>
+        <article class="testimonial-card">
+          <p class="testimonial-stars">★★★★★</p>
+          <blockquote class="testimonial-text">"L'app est top. Je suis mes 3 chats depuis mon téléphone. Vraiment révolutionnaire."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">J</div>
+            <div class="author-info"><p class="name">Jean-Pierre M.</p><p class="location">Lyon, France</p></div>
+          </div>
+        </article>
+        <article class="testimonial-card">
+          <p class="testimonial-stars">★★★★★</p>
+          <blockquote class="testimonial-text">"Super produit, ma chatte l'utilise depuis le premier jour. Silencieux et efficace!"</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar">S</div>
+            <div class="author-info"><p class="name">Sophie D.</p><p class="location">Bruxelles, Belgique</p></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>

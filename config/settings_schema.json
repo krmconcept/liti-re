@@ -1,0 +1,105 @@
+[
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_brown",
+        "label": "Couleur principale (brun)",
+        "default": "#3D2817"
+      },
+      {
+        "type": "color",
+        "id": "color_cream",
+        "label": "Couleur secondaire (crème)",
+        "default": "#F5F1ED"
+      },
+      {
+        "type": "color",
+        "id": "color_green",
+        "label": "Couleur accent (vert sauge)",
+        "default": "#8B9B6F"
+      },
+      {
+        "type": "color",
+        "id": "color_charcoal",
+        "label": "Couleur fond sombre",
+        "default": "#0D0D0D"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Police des titres",
+        "default": "montserrat_n7"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Police du corps de texte",
+        "default": "inter_n4"
+      }
+    ]
+  },
+  {
+    "name": "Logo & Marque",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 80,
+        "max": 300,
+        "step": 10,
+        "unit": "px",
+        "label": "Largeur du logo",
+        "default": 160
+      },
+      {
+        "type": "text",
+        "id": "store_name",
+        "label": "Nom de la boutique",
+        "default": "PETCARE SMART"
+      }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok URL"
+      }
+    ]
+  },
+  {
+    "name": "Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "Email de contact",
+        "default": "contact@petcaresmart.be"
+      }
+    ]
+  }
+]

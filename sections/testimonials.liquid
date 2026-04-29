@@ -1,0 +1,98 @@
+<section class="testimonials-section" id="testimonials">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ section.settings.title | default: 'Ce que Disent nos Clients' }}</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      {%- for block in section.blocks -%}
+        <article class="testimonial-card animate-on-scroll" {{ block.shopify_attributes }}>
+          <p class="testimonial-stars" aria-label="5 étoiles sur 5">★★★★★</p>
+          <blockquote class="testimonial-text">"{{ block.settings.quote }}"</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">{{ block.settings.name | slice: 0 }}</div>
+            <div class="author-info">
+              <p class="name">{{ block.settings.name }}</p>
+              <p class="location">{{ block.settings.location }}</p>
+            </div>
+          </div>
+        </article>
+      {%- else -%}
+        <article class="testimonial-card animate-on-scroll">
+          <p class="testimonial-stars" aria-label="5 étoiles sur 5">★★★★★</p>
+          <blockquote class="testimonial-text">"Mes chats adorent ! Plus aucune odeur dans la maison. Meilleur investissement que j'aie jamais fait pour mes félins. Livraison rapide et installation super simple."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">M</div>
+            <div class="author-info">
+              <p class="name">Marie L.</p>
+              <p class="location">Paris, France</p>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card animate-on-scroll animate-in-delay-1">
+          <p class="testimonial-stars" aria-label="5 étoiles sur 5">★★★★★</p>
+          <blockquote class="testimonial-text">"L'application est géniale. Je sais exactement combien de fois mes chats utilisent la litière et si tout va bien. Un vrai investissement pour la santé de mes animaux."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">J</div>
+            <div class="author-info">
+              <p class="name">Jean-Pierre M.</p>
+              <p class="location">Lyon, France</p>
+            </div>
+          </div>
+        </article>
+        <article class="testimonial-card animate-on-scroll animate-in-delay-2">
+          <p class="testimonial-stars" aria-label="5 étoiles sur 5">★★★★★</p>
+          <blockquote class="testimonial-text">"Installation en 5 minutes, aucune difficulté. Ma chatte a commencé à l'utiliser dès le premier jour. Silencieuse, efficace, et le design s'intègre parfaitement dans mon salon."</blockquote>
+          <div class="testimonial-author">
+            <div class="author-avatar" aria-hidden="true">S</div>
+            <div class="author-info">
+              <p class="name">Sophie D.</p>
+              <p class="location">Bruxelles, Belgique</p>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Témoignages",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titre de la section",
+      "default": "Ce que Disent nos Clients"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Témoignage",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Citation",
+          "default": "Témoignage client..."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nom du client",
+          "default": "Marie L."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Localisation",
+          "default": "Paris, France"
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Témoignages" }]
+}
+{% endschema %}

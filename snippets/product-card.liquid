@@ -1,0 +1,48 @@
+{%- comment -%}
+  Renders a product card.
+  Usage: {% render 'product-card', product: product %}
+{%- endcomment -%}
+
+<article class="product-card" aria-labelledby="ProductTitle-{{ product.id }}">
+  <a href="{{ product.url }}" class="product-card-img-wrap" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 600 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="lazy"
+        width="600"
+        height="600"
+      >
+    {%- else -%}
+      <div style="width:100%;height:280px;background:var(--cream);display:flex;align-items:center;justify-content:center;color:var(--text-muted)">
+        Aucune image
+      </div>
+    {%- endif -%}
+  </a>
+
+  <div class="product-card-body">
+    <h3 class="product-card-title" id="ProductTitle-{{ product.id }}">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    <p
+      class="product-card-price"
+      aria-label="Prix : {{ product.price | money }}"
+    >
+      {%- if product.compare_at_price > product.price -%}
+        <s style="font-size:0.875rem;opacity:0.5;font-weight:400;">{{ product.compare_at_price | money }}</s>
+        &nbsp;{{ product.price | money }}
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+  </div>
+
+  <a
+    href="{{ product.url }}"
+    class="product-card-btn"
+    aria-label="Voir {{ product.title }}"
+  >
+    Voir le produit
+  </a>
+</article>

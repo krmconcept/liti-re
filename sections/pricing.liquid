@@ -1,0 +1,73 @@
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="section-title">
+      <h2>{{ section.settings.title | default: 'Votre Investissement' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p>{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="pricing-card">
+      {%- if section.settings.badge != blank -%}
+        <span class="pricing-badge">{{ section.settings.badge }}</span>
+      {%- else -%}
+        <span class="pricing-badge">🏆 Meilleur Rapport Qualité/Prix</span>
+      {%- endif -%}
+
+      <p class="price-main">{{ section.settings.price | default: '349,90€' }}</p>
+      <p class="price-vat">{{ section.settings.vat_note | default: 'Prix TTC, toutes taxes comprises' }}</p>
+
+      {%- if section.settings.klarna_text != blank -%}
+        <span class="price-klarna">{{ section.settings.klarna_text }}</span>
+      {%- else -%}
+        <span class="price-klarna">💳 Klarna : seulement 58€/mois (0% intérêt)</span>
+      {%- endif -%}
+
+      <p class="price-compare">{{ section.settings.compare_text | default: 'Moitié prix vs concurrents (PETLIBRO : 699€+)' }}</p>
+
+      <p class="price-daily text-accent">{{ section.settings.daily_value | default: '96 centimes par jour pour des années de liberté totale' }}</p>
+
+      {%- if section.settings.shipping_note != blank -%}
+        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-lg)">{{ section.settings.shipping_note }}</p>
+      {%- else -%}
+        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-lg)">🚚 Livraison gratuite à partir de 50€</p>
+      {%- endif -%}
+
+      <div class="pricing-actions">
+        <a href="{{ section.settings.primary_link | default: '/cart' }}" class="btn btn-primary btn-lg">
+          {{ section.settings.primary_cta | default: 'Commander Maintenant' }}
+        </a>
+        <a href="{{ section.settings.secondary_link | default: '/collections/all' }}" class="btn btn-secondary btn-lg">
+          {{ section.settings.secondary_cta | default: 'Voir le Produit' }}
+        </a>
+      </div>
+
+      <p class="pricing-guarantee">
+        🔒 {{ section.settings.guarantee | default: '30 jours pour tomber amoureux. Ou remboursement 100%, sans conditions.' }}
+      </p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Tarification",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Votre Investissement" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre (optionnel)" },
+    { "type": "text", "id": "badge", "label": "Badge", "default": "🏆 Meilleur Rapport Qualité/Prix" },
+    { "type": "text", "id": "price", "label": "Prix principal", "default": "349,90€" },
+    { "type": "text", "id": "vat_note", "label": "Note TVA", "default": "Prix TTC, toutes taxes comprises" },
+    { "type": "text", "id": "klarna_text", "label": "Texte Klarna", "default": "💳 Klarna : seulement 58€/mois (0% intérêt)" },
+    { "type": "text", "id": "compare_text", "label": "Comparaison concurrents", "default": "Moitié prix vs concurrents (PETLIBRO : 699€+)" },
+    { "type": "text", "id": "daily_value", "label": "Valeur quotidienne", "default": "96 centimes par jour pour des années de liberté totale" },
+    { "type": "text", "id": "shipping_note", "label": "Note livraison", "default": "🚚 Livraison gratuite à partir de 50€" },
+    { "type": "text", "id": "primary_cta", "label": "Texte bouton principal", "default": "Commander Maintenant" },
+    { "type": "url", "id": "primary_link", "label": "Lien bouton principal" },
+    { "type": "text", "id": "secondary_cta", "label": "Texte bouton secondaire", "default": "Voir le Produit" },
+    { "type": "url", "id": "secondary_link", "label": "Lien bouton secondaire" },
+    { "type": "text", "id": "guarantee", "label": "Texte garantie", "default": "30 jours pour tomber amoureux. Ou remboursement 100%, sans conditions." }
+  ],
+  "presets": [{ "name": "Tarification" }]
+}
+{% endschema %}
