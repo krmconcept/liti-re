@@ -1,13 +1,15 @@
 /* ============================================================
-   PETCARE SMART — Main JavaScript
+   PETCARE SMART — Main JavaScript v2.0
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
+  const prefersMotion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+
   /* ===== 1. STICKY HEADER ===== */
   const header = document.querySelector('.site-header');
   if (header) {
-    window.addEventListener('scroll', function () {
+    window.addEventListener('scroll', () => {
       header.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
   }
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     mobileNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', function () {
+      link.addEventListener('click', () => {
         mobileNav.classList.remove('open');
         menuToggle.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
@@ -35,35 +37,29 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ===== 3. FAQ ACCORDION ===== */
-  const faqItems = document.querySelectorAll('.faq-item');
-
-  faqItems.forEach(item => {
-    const header = item.querySelector('.faq-header');
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const hdr = item.querySelector('.faq-header');
     const body = item.querySelector('.faq-body');
+    if (!hdr || !body) return;
 
-    if (!header || !body) return;
-
-    header.addEventListener('click', function () {
+    hdr.addEventListener('click', () => {
       const isActive = item.classList.contains('active');
 
-      // Close all items
-      faqItems.forEach(other => {
+      document.querySelectorAll('.faq-item').forEach(other => {
         other.classList.remove('active');
-        const otherBody = other.querySelector('.faq-body');
-        if (otherBody) otherBody.classList.remove('open');
+        other.querySelector('.faq-body')?.classList.remove('open');
         other.querySelector('.faq-header')?.setAttribute('aria-expanded', 'false');
       });
 
-      // Open clicked item if it was closed
       if (!isActive) {
         item.classList.add('active');
         body.classList.add('open');
-        header.setAttribute('aria-expanded', 'true');
+        hdr.setAttribute('aria-expanded', 'true');
       }
     });
   });
 
-  /* ===== 4. SMOOTH SCROLL FOR ANCHOR LINKS ===== */
+  /* ===== 4. SMOOTH SCROLL ===== */
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
@@ -71,49 +67,107 @@ document.addEventListener('DOMContentLoaded', function () {
       const target = document.querySelector(href);
       if (target) {
         e.preventDefault();
-        const headerOffset = parseInt(
+        const offset = parseInt(
           getComputedStyle(document.documentElement).getPropertyValue('--header-height') || '80'
         );
-        const top = target.getBoundingClientRect().top + window.scrollY - headerOffset - 20;
-        window.scrollTo({ top, behavior: 'smooth' });
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset - 20, behavior: 'smooth' });
       }
     });
   });
 
-  /* ===== 5. LAZY LOADING IMAGES ===== */
+  /* ===== 5. SCROLL REVEAL (.reveal class) ===== */
   if ('IntersectionObserver' in window) {
-    const lazyImages = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries) => {
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src;
-          if (img.dataset.srcset) img.srcset = img.dataset.srcset;
-          img.classList.add('loaded');
-          imageObserver.unobserve(img);
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
         }
       });
-    }, { rootMargin: '100px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    lazyImages.forEach(img => imageObserver.observe(img));
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
   }
 
-  /* ===== 6. ANIMATE ON SCROLL ===== */
-  if ('IntersectionObserver' in window) {
-    const animateEls = document.querySelectorAll('.animate-on-scroll');
-    const animObserver = new IntersectionObserver((entries) => {
+  /* ===== 6. STAGGER CHILDREN (cards, grid items) ===== */
+  if (prefersMotion && 'IntersectionObserver' in window) {
+    const staggerObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-          animObserver.unobserve(entry.target);
+          const children = entry.target.querySelectorAll('[class*="card"], .benefit-card, .feature-card, .testimonial-card, .problem-card');
+          children.forEach((child, i) => {
+            child.style.transitionDelay = `${i * 80}ms`;
+            child.classList.add('reveal', 'visible');
+          });
+          staggerObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.08 });
 
-    animateEls.forEach(el => animObserver.observe(el));
+    document.querySelectorAll('.benefits-grid, .features-grid, .testimonials-grid, .problems-grid').forEach(grid => {
+      staggerObserver.observe(grid);
+    });
   }
 
-  /* ===== 7. PRODUCT GALLERY ===== */
+  /* ===== 7. COUNTER ANIMATION ===== */
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+    const suffix = el.dataset.suffix || '';
+    const duration = 1400;
+    const start = performance.now();
+
+    function easeOutQuart(t) {
+      return 1 - Math.pow(1 - t, 4);
+    }
+
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const value = target * easeOutQuart(progress);
+      el.textContent = value.toFixed(decimals) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  if ('IntersectionObserver' in window && prefersMotion) {
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('[data-counter]').forEach(el => counterObserver.observe(el));
+  } else {
+    // No motion: just show final values
+    document.querySelectorAll('[data-counter]').forEach(el => {
+      const target = parseFloat(el.dataset.target);
+      const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+      const suffix = el.dataset.suffix || '';
+      el.textContent = target.toFixed(decimals) + suffix;
+    });
+  }
+
+  /* ===== 8. FLOATING ADD-TO-CART BAR ===== */
+  const floatingAtc = document.querySelector('.floating-atc');
+  const heroSection = document.querySelector('.hero-section');
+
+  if (floatingAtc && heroSection && 'IntersectionObserver' in window) {
+    const atcObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        floatingAtc.classList.toggle('visible', !entry.isIntersecting);
+      });
+    }, { threshold: 0 });
+
+    atcObserver.observe(heroSection);
+  }
+
+  /* ===== 9. PRODUCT GALLERY ===== */
   const galleryMain = document.querySelector('.gallery-main img');
   const thumbs = document.querySelectorAll('.gallery-thumb');
 
@@ -122,7 +176,17 @@ document.addEventListener('DOMContentLoaded', function () {
       thumb.addEventListener('click', function () {
         const imgSrc = this.querySelector('img')?.src;
         if (imgSrc) {
-          galleryMain.src = imgSrc;
+          if (prefersMotion) {
+            galleryMain.style.opacity = '0';
+            galleryMain.style.scale = '0.97';
+            setTimeout(() => {
+              galleryMain.src = imgSrc;
+              galleryMain.style.opacity = '';
+              galleryMain.style.scale = '';
+            }, 180);
+          } else {
+            galleryMain.src = imgSrc;
+          }
           thumbs.forEach(t => t.classList.remove('active'));
           this.classList.add('active');
         }
@@ -130,12 +194,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ===== 8. QUANTITY SELECTOR ===== */
+  /* ===== 10. QUANTITY SELECTOR ===== */
   document.querySelectorAll('.quantity-selector').forEach(selector => {
     const input = selector.querySelector('.qty-input');
     const minus = selector.querySelector('.qty-minus');
     const plus = selector.querySelector('.qty-plus');
-
     if (!input) return;
 
     minus?.addEventListener('click', () => {
@@ -151,18 +214,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     input.addEventListener('change', () => {
       let val = parseInt(input.value) || 1;
-      val = Math.max(1, Math.min(val, parseInt(input.max) || 99));
-      input.value = val;
+      input.value = Math.max(1, Math.min(val, parseInt(input.max) || 99));
     });
   });
 
-  /* ===== 9. CART COUNT UPDATE ===== */
+  /* ===== 11. CART COUNT ===== */
   function updateCartCount() {
     fetch('/cart.js')
       .then(r => r.json())
       .then(cart => {
-        const countEls = document.querySelectorAll('.cart-count');
-        countEls.forEach(el => {
+        document.querySelectorAll('.cart-count').forEach(el => {
           el.textContent = cart.item_count;
           el.style.display = cart.item_count > 0 ? 'inline-flex' : 'none';
         });
@@ -170,10 +231,9 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(() => {});
   }
 
-  // Update cart count on page load
   updateCartCount();
 
-  /* ===== 10. ADD TO CART AJAX ===== */
+  /* ===== 12. ADD TO CART AJAX ===== */
   document.querySelectorAll('[data-add-to-cart]').forEach(btn => {
     btn.addEventListener('click', function (e) {
       e.preventDefault();
@@ -181,32 +241,29 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!variantId) return;
 
       const qty = document.querySelector('.qty-input')?.value || 1;
+      const originalText = btn.textContent;
 
       btn.disabled = true;
-      const originalText = btn.textContent;
-      btn.textContent = 'Ajout...';
+      btn.textContent = 'Ajout en cours…';
 
       const formData = new FormData();
       formData.append('id', variantId);
       formData.append('quantity', qty);
 
-      fetch('/cart/add.js', {
-        method: 'POST',
-        body: formData
-      })
+      fetch('/cart/add.js', { method: 'POST', body: formData })
         .then(r => {
-          if (!r.ok) throw new Error('Erreur lors de l\'ajout au panier');
+          if (!r.ok) throw new Error();
           return r.json();
         })
         .then(() => {
-          btn.textContent = '✓ Ajouté !';
-          btn.style.background = 'var(--green-dark)';
+          btn.textContent = '✓ Ajouté au panier';
+          btn.style.setProperty('--btn-bg', 'var(--green-dark, #6b7a52)');
           updateCartCount();
           setTimeout(() => {
             btn.textContent = originalText;
-            btn.style.background = '';
+            btn.style.removeProperty('--btn-bg');
             btn.disabled = false;
-          }, 2000);
+          }, 2200);
         })
         .catch(() => {
           btn.textContent = 'Erreur — Réessayer';
@@ -218,50 +275,41 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ===== 11. HERO PARALLAX (Subtle) ===== */
+  /* ===== 13. HERO PARALLAX ===== */
   const heroBg = document.querySelector('.hero-bg');
-  if (heroBg && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+  if (heroBg && prefersMotion) {
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      if (scrolled < window.innerHeight) {
-        heroBg.style.transform = `translateY(${scrolled * 0.25}px) scale(1.03)`;
+      if (window.scrollY < window.innerHeight) {
+        heroBg.style.transform = `translateY(${window.scrollY * 0.25}px) scale(1.03)`;
       }
     }, { passive: true });
   }
 
-  /* ===== 12. BEFORE/AFTER HOVER EFFECT ===== */
-  const baSection = document.querySelector('.before-after-section');
-  if (baSection) {
-    baSection.addEventListener('mousemove', function (e) {
-      const rect = this.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const bg = this.querySelector('.before-after-bg');
-      if (bg) {
-        bg.style.backgroundPositionX = `${50 + (x - 50) * 0.05}%`;
-      }
-    });
-  }
-
-  /* ===== 13. SMOOTH REVEAL ON SCROLL ===== */
-  if ('IntersectionObserver' in window && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-      section.style.opacity = '0';
-      section.style.transform = 'translateY(20px)';
-      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-
-    const sectionObserver = new IntersectionObserver((entries) => {
+  /* ===== 14. LAZY IMAGES ===== */
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-          sectionObserver.unobserve(entry.target);
+          const img = entry.target;
+          if (img.dataset.src) img.src = img.dataset.src;
+          if (img.dataset.srcset) img.srcset = img.dataset.srcset;
+          img.classList.add('loaded');
+          imageObserver.unobserve(img);
         }
       });
-    }, { threshold: 0.08 });
+    }, { rootMargin: '120px' });
 
-    sections.forEach(s => sectionObserver.observe(s));
+    document.querySelectorAll('img[data-src]').forEach(img => imageObserver.observe(img));
   }
+
+  /* ===== 15. COMPARISON TABLE HIGHLIGHT ===== */
+  document.querySelectorAll('.comparison-table tbody tr').forEach(row => {
+    row.addEventListener('mouseenter', function () {
+      this.classList.add('row-hover');
+    });
+    row.addEventListener('mouseleave', function () {
+      this.classList.remove('row-hover');
+    });
+  });
 
 });

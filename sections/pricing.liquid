@@ -1,49 +1,117 @@
 <section class="pricing-section" id="pricing">
   <div class="container">
-    <div class="section-title">
+    <div class="section-title reveal">
+      <span class="section-eyebrow">Tarification</span>
       <h2>{{ section.settings.title | default: 'Votre Investissement' }}</h2>
-      {%- if section.settings.subtitle != blank -%}
-        <p>{{ section.settings.subtitle }}</p>
-      {%- endif -%}
+      <p>{{ section.settings.subtitle | default: 'Économisez des centaines d\'euros par rapport aux concurrents, sans compromis sur la qualité.' }}</p>
     </div>
 
-    <div class="pricing-card">
+    <!-- Comparison Table -->
+    <div class="comparison-wrap reveal">
+      <div class="comparison-label">Pourquoi choisir PETCARE SMART ?</div>
+      <div class="comparison-table-wrap">
+        <table class="comparison-table" role="table" aria-label="Comparaison litières">
+          <thead>
+            <tr>
+              <th scope="col">Critère</th>
+              <th scope="col" class="col-highlight">
+                <span class="col-badge">Notre choix</span>
+                PETCARE SMART
+              </th>
+              <th scope="col">Litière classique</th>
+              <th scope="col">PETLIBRO / concurrent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Prix</td>
+              <td class="col-highlight"><strong>349,90 €</strong></td>
+              <td>15–40 €</td>
+              <td>699–899 €</td>
+            </tr>
+            <tr>
+              <td>Nettoyage automatique</td>
+              <td class="col-highlight check">✓</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>App mobile connectée</td>
+              <td class="col-highlight check">✓</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Mode silencieux (≤ 35 dB)</td>
+              <td class="col-highlight check">✓</td>
+              <td>—</td>
+              <td class="cross">✗ (45–55 dB)</td>
+            </tr>
+            <tr>
+              <td>Capacité bac</td>
+              <td class="col-highlight"><strong>65 L</strong></td>
+              <td>~15 L</td>
+              <td>40–50 L</td>
+            </tr>
+            <tr>
+              <td>Multi-chats (jusqu'à 3)</td>
+              <td class="col-highlight check">✓</td>
+              <td class="cross">✗</td>
+              <td>Limité</td>
+            </tr>
+            <tr>
+              <td>Garantie</td>
+              <td class="col-highlight"><strong>1 an + 30j satisfait</strong></td>
+              <td>—</td>
+              <td>6 mois</td>
+            </tr>
+            <tr>
+              <td>Livraison gratuite</td>
+              <td class="col-highlight check">✓ BE + FR</td>
+              <td>Variable</td>
+              <td class="cross">✗ (payante)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pricing Card -->
+    <div class="pricing-card reveal">
       {%- if section.settings.badge != blank -%}
         <span class="pricing-badge">{{ section.settings.badge }}</span>
       {%- else -%}
         <span class="pricing-badge">🏆 Meilleur Rapport Qualité/Prix</span>
       {%- endif -%}
 
-      <p class="price-main">{{ section.settings.price | default: '349,90€' }}</p>
+      <p class="price-main">
+        <span data-counter data-target="349" data-suffix=",90 €">349,90 €</span>
+      </p>
       <p class="price-vat">{{ section.settings.vat_note | default: 'Prix TTC, toutes taxes comprises' }}</p>
 
       {%- if section.settings.klarna_text != blank -%}
         <span class="price-klarna">{{ section.settings.klarna_text }}</span>
       {%- else -%}
-        <span class="price-klarna">💳 Klarna : seulement 58€/mois (0% intérêt)</span>
+        <span class="price-klarna">💳 Klarna : seulement 58 €/mois (0 % d'intérêts)</span>
       {%- endif -%}
 
-      <p class="price-compare">{{ section.settings.compare_text | default: 'Moitié prix vs concurrents (PETLIBRO : 699€+)' }}</p>
+      <p class="price-compare">{{ section.settings.compare_text | default: 'Moitié prix vs concurrents (PETLIBRO : 699 €+)' }}</p>
 
-      <p class="price-daily text-accent">{{ section.settings.daily_value | default: '96 centimes par jour pour des années de liberté totale' }}</p>
+      <p class="price-daily text-accent">{{ section.settings.daily_value | default: '96 centimes par jour — pour des années de liberté totale' }}</p>
 
-      {%- if section.settings.shipping_note != blank -%}
-        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-lg)">{{ section.settings.shipping_note }}</p>
-      {%- else -%}
-        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:var(--space-lg)">🚚 Livraison gratuite à partir de 50€</p>
-      {%- endif -%}
+      <p class="price-shipping">🚚 {{ section.settings.shipping_note | default: 'Livraison gratuite en Belgique et en France' }}</p>
 
       <div class="pricing-actions">
-        <a href="{{ section.settings.primary_link | default: '/cart' }}" class="btn btn-primary btn-lg">
+        <a href="{{ section.settings.primary_link | default: '/cart' }}" class="btn btn--primary btn--lg">
           {{ section.settings.primary_cta | default: 'Commander Maintenant' }}
         </a>
-        <a href="{{ section.settings.secondary_link | default: '/collections/all' }}" class="btn btn-secondary btn-lg">
+        <a href="{{ section.settings.secondary_link | default: '/collections/all' }}" class="btn btn--outline btn--lg">
           {{ section.settings.secondary_cta | default: 'Voir le Produit' }}
         </a>
       </div>
 
       <p class="pricing-guarantee">
-        🔒 {{ section.settings.guarantee | default: '30 jours pour tomber amoureux. Ou remboursement 100%, sans conditions.' }}
+        🔒 {{ section.settings.guarantee | default: '30 jours pour tomber amoureux. Ou remboursement 100 %, sans conditions.' }}
       </p>
     </div>
   </div>
@@ -54,19 +122,19 @@
   "name": "Tarification",
   "settings": [
     { "type": "text", "id": "title", "label": "Titre", "default": "Votre Investissement" },
-    { "type": "text", "id": "subtitle", "label": "Sous-titre (optionnel)" },
+    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Économisez des centaines d'euros par rapport aux concurrents, sans compromis sur la qualité." },
     { "type": "text", "id": "badge", "label": "Badge", "default": "🏆 Meilleur Rapport Qualité/Prix" },
     { "type": "text", "id": "price", "label": "Prix principal", "default": "349,90€" },
     { "type": "text", "id": "vat_note", "label": "Note TVA", "default": "Prix TTC, toutes taxes comprises" },
-    { "type": "text", "id": "klarna_text", "label": "Texte Klarna", "default": "💳 Klarna : seulement 58€/mois (0% intérêt)" },
-    { "type": "text", "id": "compare_text", "label": "Comparaison concurrents", "default": "Moitié prix vs concurrents (PETLIBRO : 699€+)" },
-    { "type": "text", "id": "daily_value", "label": "Valeur quotidienne", "default": "96 centimes par jour pour des années de liberté totale" },
-    { "type": "text", "id": "shipping_note", "label": "Note livraison", "default": "🚚 Livraison gratuite à partir de 50€" },
-    { "type": "text", "id": "primary_cta", "label": "Texte bouton principal", "default": "Commander Maintenant" },
+    { "type": "text", "id": "klarna_text", "label": "Texte Klarna", "default": "💳 Klarna : seulement 58 €/mois (0 % d'intérêts)" },
+    { "type": "text", "id": "compare_text", "label": "Comparaison", "default": "Moitié prix vs concurrents (PETLIBRO : 699 €+)" },
+    { "type": "text", "id": "daily_value", "label": "Valeur quotidienne", "default": "96 centimes par jour — pour des années de liberté totale" },
+    { "type": "text", "id": "shipping_note", "label": "Livraison", "default": "Livraison gratuite en Belgique et en France" },
+    { "type": "text", "id": "primary_cta", "label": "Bouton principal", "default": "Commander Maintenant" },
     { "type": "url", "id": "primary_link", "label": "Lien bouton principal" },
-    { "type": "text", "id": "secondary_cta", "label": "Texte bouton secondaire", "default": "Voir le Produit" },
+    { "type": "text", "id": "secondary_cta", "label": "Bouton secondaire", "default": "Voir le Produit" },
     { "type": "url", "id": "secondary_link", "label": "Lien bouton secondaire" },
-    { "type": "text", "id": "guarantee", "label": "Texte garantie", "default": "30 jours pour tomber amoureux. Ou remboursement 100%, sans conditions." }
+    { "type": "text", "id": "guarantee", "label": "Garantie", "default": "30 jours pour tomber amoureux. Ou remboursement 100 %, sans conditions." }
   ],
   "presets": [{ "name": "Tarification" }]
 }

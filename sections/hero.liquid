@@ -3,11 +3,11 @@
     class="hero-bg"
     style="background-image: url('{{ 'hero-liberty.jpg' | asset_url }}');"
     role="img"
-    aria-label="{{ section.settings.image_alt | default: 'Litière robot PETCARE SMART' }}"
+    aria-label="{{ section.settings.image_alt | default: 'Litière robot PETCARE SMART avec chat' }}"
   ></div>
   <div class="hero-overlay"></div>
 
-  <div class="hero-content">
+  <div class="hero-content reveal">
     {%- if section.settings.badge != blank -%}
       <span class="hero-badge">{{ section.settings.badge }}</span>
     {%- else -%}
@@ -16,25 +16,53 @@
 
     <h1>{{ section.settings.heading | default: 'Liberté Sans Effort' }}</h1>
 
-    <p>{{ section.settings.subheading | default: 'Litière intelligente pour chats • Nettoyage automatique 24/7' }}</p>
+    <p class="hero-sub">{{ section.settings.subheading | default: 'La première litière robot qui s\'adapte à votre chat.<br>Nettoyage automatique, app connectée, silence absolu.' }}</p>
 
     <div class="hero-actions">
       <a
         href="{{ section.settings.cta_link | default: '/collections/all' }}"
-        class="btn btn-primary btn-lg"
+        class="btn btn--primary btn--lg"
       >
         {{ section.settings.cta_text | default: 'Découvrir PETCARE SMART' }}
       </a>
-      <a href="#benefits" class="btn btn-white btn-lg">
+      <a href="#benefits" class="btn btn--ghost btn--lg">
         En savoir plus
       </a>
     </div>
   </div>
 
+  <!-- Stats strip -->
+  <div class="hero-stats" aria-label="Chiffres clés">
+    <div class="hero-stat">
+      <strong>
+        <span data-counter data-target="4.7" data-decimals="1">4.7</span>/5
+      </strong>
+      <span>Note clients</span>
+    </div>
+    <div class="hero-stat-divider" aria-hidden="true"></div>
+    <div class="hero-stat">
+      <strong>
+        <span data-counter data-target="1136">1136</span>
+      </strong>
+      <span>Avis vérifiés</span>
+    </div>
+    <div class="hero-stat-divider" aria-hidden="true"></div>
+    <div class="hero-stat">
+      <strong>30 jours</strong>
+      <span>Garantie satisfait</span>
+    </div>
+    <div class="hero-stat-divider" aria-hidden="true"></div>
+    <div class="hero-stat">
+      <strong>Livraison</strong>
+      <span>Gratuite en Belgique &amp; France</span>
+    </div>
+  </div>
+
   <div class="hero-scroll" aria-hidden="true">
     <span>Découvrir</span>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <polyline points="6 9 12 15 18 9"/>
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="8" y1="0" x2="8" y2="16"/>
+      <polyline points="2 10 8 16 14 10"/>
     </svg>
   </div>
 </section>
@@ -46,7 +74,7 @@
     {
       "type": "text",
       "id": "badge",
-      "label": "Badge (texte au-dessus du titre)",
+      "label": "Badge texte",
       "default": "✨ Nettoyage Automatique 24/7"
     },
     {
@@ -56,32 +84,32 @@
       "default": "Liberté Sans Effort"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "subheading",
       "label": "Sous-titre",
-      "default": "Litière intelligente pour chats • Nettoyage automatique 24/7"
+      "default": "La première litière robot qui s'adapte à votre chat. Nettoyage automatique, app connectée, silence absolu."
     },
     {
       "type": "text",
       "id": "cta_text",
-      "label": "Texte du bouton principal",
+      "label": "Bouton principal",
       "default": "Découvrir PETCARE SMART"
     },
     {
       "type": "url",
       "id": "cta_link",
-      "label": "Lien du bouton principal"
+      "label": "Lien bouton principal"
     },
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Image hero (alternative à hero-liberty.jpg)"
+      "label": "Image hero"
     },
     {
       "type": "text",
       "id": "image_alt",
-      "label": "Texte alternatif de l'image",
-      "default": "Litière robot PETCARE SMART"
+      "label": "Alt de l'image",
+      "default": "Litière robot PETCARE SMART avec chat"
     }
   ],
   "presets": [
